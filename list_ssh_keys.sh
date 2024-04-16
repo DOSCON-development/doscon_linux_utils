@@ -13,18 +13,22 @@ echo "Username: SSH Key Last 40 Characters"
 getent passwd | while IFS=: read -r username _ uid gid gecos home shell; do
     # Only process users with a valid login shell (you might want to adjust the list of valid shells according to your environment)
     if [[ "$shell" =~ /bin/bash$|/bin/sh$ ]]; then
-        # Check if the .ssh/authorized_keys file exists and is not empty
+        # Check if the .ssh/authorized_keys file exists
         authorized_keys="$home/.ssh/authorized_keys"
-        if [ -f "$authorized_keys" ] && [ -s "$authorized_keys" ]; then
-            # Read each line from authorized_keys file
-            while read -r key; do
-                # Check if the line is empty
-                if [ -n "$key" ]; then
+        if [ -f "$authorized_keys" ]; then
+            # Count the non-empty lines in the file
+            key_count=$(grep -cve '^\s*$' "$authorized_keys")
+            # Check if there are fewer than 5 non-empty lines
+            if [ "$key_count" -ge 5 ]; then
+                # Read each non-empty line from authorized_keys file
+                grep -v '^\s*$' "$authorized_keys" | while read -r key; do
                     # Extract the last 40 characters of the key
-                    last="${key: -40}"
-                    echo "$username: $last"
-                fi
-            done < "$authorized_keys"
+                    last40="${key: -40}"
+                    echo "$username: $last40"
+                done
+            else
+                echo "$username: Insufficient SSH keys (<5 keys)"
+            fi
         else
             echo "$username: No SSH key found"
         fi
