@@ -13,9 +13,9 @@ echo "Username: SSH Key Last 40 Characters"
 getent passwd | while IFS=: read -r username _ uid gid gecos home shell; do
     # Only process users with a valid login shell (you might want to adjust the list of valid shells according to your environment)
     if [[ "$shell" =~ /bin/bash$|/bin/sh$ ]]; then
-        # Check if the .ssh/authorized_keys file exists
+        # Check if the .ssh/authorized_keys file exists and is not empty
         authorized_keys="$home/.ssh/authorized_keys"
-        if [ -f "$authorized_keys" ]; then
+        if [ -f "$authorized_keys" ] && [ -s "$authorized_keys" ]; then
             # Read each line from authorized_keys file
             while read -r key; do
                 # Check if the line is empty
