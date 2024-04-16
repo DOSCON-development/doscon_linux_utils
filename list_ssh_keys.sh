@@ -7,7 +7,7 @@ if [ "$(id -u)" -ne 0 ]; then
 fi
 
 # Print header
-echo "Username: SSH Key Last 8 Characters"
+echo "Username: SSH Key Last 40 Characters"
 
 # Get list of users from /etc/passwd and their home directories
 getent passwd | while IFS=: read -r username _ uid gid gecos home shell; do
@@ -18,9 +18,12 @@ getent passwd | while IFS=: read -r username _ uid gid gecos home shell; do
         if [ -f "$authorized_keys" ]; then
             # Read each line from authorized_keys file
             while read -r key; do
-                # Extract the last 20 characters of the key
-                last20="${key: -20}"
-                echo "$username: $last20"
+                # Check if the line is empty
+                if [ -n "$key" ]; then
+                    # Extract the last 40 characters of the key
+                    last="${key: -40}"
+                    echo "$username: $last"
+                fi
             done < "$authorized_keys"
         else
             echo "$username: No SSH key found"
