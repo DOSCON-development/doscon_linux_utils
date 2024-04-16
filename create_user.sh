@@ -47,4 +47,19 @@ chown -R "$username:$username" "$ssh_dir"
 chmod 700 "$ssh_dir"
 chmod 600 "$ssh_dir/authorized_keys"
 
+# Ask if the user should have sudo privileges
+while true; do
+    read -p "Should the user have sudo privileges? (yes/no): " grant_sudo
+    if [[ "$grant_sudo" == "yes" ]]; then
+        usermod -aG sudo "$username"
+        echo "User '$username' has been added to the sudo group."
+        break
+    elif [[ "$grant_sudo" == "no" ]]; then
+        echo "No sudo privileges granted to $username."
+        break
+    else
+        echo "Please answer 'yes' or 'no'."
+    fi
+done
+
 echo "User '$username' created successfully with SSH access."
