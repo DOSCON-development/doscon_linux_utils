@@ -14,7 +14,7 @@ sudo .\install.sh
 ```
 
 ## create_user.sh
-
+prompts for username and password
 
 ## add_ssh_key
 ```
