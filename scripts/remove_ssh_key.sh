@@ -39,7 +39,7 @@ fi
 
 # Read and display keys with numbers
 echo "SSH Keys for user $username:"
-key_list=($(cat "$AUTHORIZED_KEYS"))
+IFS=$'\n' read -d '' -r -a key_list < "$AUTHORIZED_KEYS"
 if [ ${#key_list[@]} -eq 0 ]; then
     echo "No SSH keys available for removal."
     exit 1
@@ -60,7 +60,7 @@ fi
 
 # Remove the selected key
 unset key_list[$((selection-1))]
-echo "${key_list[@]}" > "$AUTHORIZED_KEYS"
+printf "%s\n" "${key_list[@]}" > "$AUTHORIZED_KEYS"
 
 echo "Key number $selection removed successfully."
 
