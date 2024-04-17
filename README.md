@@ -16,3 +16,7 @@ sudo .\install.sh
 ## create_user.sh
 
 
+## add_ssh_key
+```
+add_ssh_key.sh -u username -k "ssh-rsa AAA..."
+```
