@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the repository URL and the directory containing the scripts
-REPO_URL="https://github.com/username/repository.git"
+REPO_URL="https://github.com/DOSCON-development/doscon_linux_utils.git"
 SCRIPTS_DIR="scripts"
 TARGET_DIR="/usr/local/sbin"
 
@@ -36,3 +36,4 @@ rm -rf /tmp/repository
 # Confirm completion
 echo "Installation completed successfully."
 echo "You can run the scripts from $TARGET_DIR"
+echo "or if /usr/local/sbin is in path, directly from the terminal"
